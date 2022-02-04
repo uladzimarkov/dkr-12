@@ -1,0 +1,73 @@
+root@u-45755:/home/user/Docker/task12# docker tag  nginx:stable-alpine nginx:rbm-dkr-12
+root@u-45755:/home/user/Docker/task12# docker images
+REPOSITORY    TAG             IMAGE ID       CREATED             SIZE
+nginx         rbm-dkr-12      373f8d4d4c60   2 months ago        23.2MB
+nginx         stable-alpine   373f8d4d4c60   2 months ago        23.2MB
+
+root@u-45755:/home/user/Docker/task12# docker rmi nginx:stable-alpine
+Untagged: nginx:stable-alpine
+
+root@u-45755:/home/user/Docker/task12# docker images
+REPOSITORY    TAG           IMAGE ID       CREATED             SIZE
+nginx         rbm-dkr-12    373f8d4d4c60   2 months ago        23.2MB
+
+root@u-45755:/home/user/Docker/task12# docker pull nginx:stable-alpine
+stable-alpine: Pulling from library/nginx
+Digest: sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556
+Status: Downloaded newer image for nginx:stable-alpine
+docker.io/library/nginx:stable-alpine
+
+root@u-45755:/home/user/Docker/task12# docker images | tee /home/user/images.txt
+REPOSITORY    TAG             IMAGE ID       CREATED             SIZE
+nginx         rbm-dkr-12      373f8d4d4c60   2 months ago        23.2MB
+nginx         stable-alpine   373f8d4d4c60   2 months ago        23.2MB
+
+root@u-45755:/home/user/Docker/task12# docker image prune -a
+WARNING! This will remove all images without at least one container associated to them.
+Are you sure you want to continue? [y/N] y
+Deleted Images:
+untagged: nginx:rbm-dkr-12
+untagged: nginx:stable-alpine
+untagged: nginx@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556
+deleted: sha256:373f8d4d4c60c0ec2ad5aefe46e4bbebfbb8e86b8cf4263f8df9730bc5d22c11
+deleted: sha256:c8136ba3f4dafedf63fb66db2e4c8679fa2d0b868a586627c460d39aa66668c8
+deleted: sha256:a7a89abd4cc08ce71d85d4ed5ef30af460253b21ab97e8a31dc48f522e222fb5
+deleted: sha256:34708a2732418d32eb5e3248871eb7da8e88442446767506917ca531f27f545e
+deleted: sha256:4ce66292e1bd93083c7ff5839bb7f317b5efbed0dc6ffc4e68235c21202d767e
+deleted: sha256:f908745614ed23541dbed12c0cf294458300d034daefe1d5c255808edc3a599a
+deleted: sha256:1a058d5342cc722ad5439cacae4b2b4eedde51d8fe8800fcf28444302355c16d
+Total reclaimed space: 23.2MB
+
+root@u-45755:/home/user/Docker/task12# docker images
+REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
+
+root@u-45755:/home/user/Docker/task12# docker run -d --name rbm-dkr-12 nginx:stable-alpine
+Unable to find image 'nginx:stable-alpine' locally
+stable-alpine: Pulling from library/nginx
+97518928ae5f: Pull complete 
+a15dfa83ed30: Pull complete 
+acae0b19bbc1: Pull complete 
+fd4282442678: Pull complete 
+b521ea0d9e3f: Pull complete 
+b3282d03aa58: Pull complete 
+Digest: sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556
+Status: Downloaded newer image for nginx:stable-alpine
+5b753161cdd4d71cbcdc9900581822faea17fb0876ed25bb268eb282a29d8f3c
+
+root@u-45755:/home/user/Docker/task12# docker rmi nginx:stable-alpine 
+Error response from daemon: conflict: unable to remove repository reference "nginx:stable-alpine" (must force) - container 5b753161cdd4 is using its referenced image 373f8d4d4c60
+
+root@u-45755:/home/user/Docker/task12# docker rmi nginx:stable-alpine  --force
+Untagged: nginx:stable-alpine
+Untagged: nginx@sha256:74694f2de64c44787a81f0554aa45b281e468c0c58b8665fafceda624d31e556
+
+root@u-45755:/home/user/Docker/task12# docker ps 
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS     NAMES
+5b753161cdd4   373f8d4d4c60   "/docker-entrypoint.…"   25 seconds ago   Up 25 seconds   80/tcp    rbm-dkr-12
+
+root@u-45755:/home/user/Docker/task12# docker restart rbm-dkr-12
+rbm-dkr-12
+
+root@u-45755:/home/user/Docker/task12# docker ps 
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS         PORTS     NAMES
+5b753161cdd4   373f8d4d4c60   "/docker-entrypoint.…"   45 seconds ago   Up 9 seconds   80/tcp    rbm-dkr-12
